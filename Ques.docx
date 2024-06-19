@@ -1,0 +1,55 @@
+1. Palindrome Number
+const palindromeNumber = (num) => {
+  return num < 0 ? false : num === +num.toString().split("").reverse().join("");
+};
+console.log(palindromeNumber(0));
+
+--------------------------------------------------------------------------------------
+2. Palindrome String
+const palindromeString = (str) => {
+  const len = str.length;
+  for (let i = 0; i < len / 2; i++) {
+    if (str[i] !== str[len - 1 - i]) {
+      return false;
+    }
+  }
+  return true;
+};
+console.log(palindromeString("re]per"));
+
+--------------------------------------------------------------------------------------
+3. Fibonacci Series
+const fibonacci = (num) => {
+  if (num < 1) return false;
+  const arr = [0, 1];
+  for (let i = 2; i <= num; i++) {
+    arr.push(arr[i - 1] + arr[i - 2]);
+  }
+  return arr;
+};
+console.log(fibonacci(0));
+
+--------------------------------------------------------------------------------------
+4. Fibonacci Number
+const fibonacci = (num) =>
+  num <= 1 ? num : fibonacci(num - 1) + fibonacci(num - 2);
+console.log(fibonacci(8));
+
+--------------------------------------------------------------------------------------
+5. Anagram
+const anagram = (str1, str2) => {
+  if (str1.length !== str2.length) return false;
+  const obj1 = {},
+    obj2 = {};
+  for (let i = 0; i < str1.length; i++) {
+    obj1[str1[i]] = (obj1[str1[i]] || 0) + 1;
+    obj2[str2[i]] = (obj2[str2[i]] || 0) + 1;
+  }
+  for (key in obj1) {
+    if (obj1[key] !== obj2[key]) return false;
+  }
+  return true;
+};
+console.log(anagram("temst", "eestt"));
+
+--------------------------------------------------------------------------------------
