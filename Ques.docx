@@ -1,3 +1,17 @@
+DSA basics
+- Time Complexity : O(1) [no for loop], O(n) [one for loop at a time], O(n2) [for loop inside a for loop].
+- Boolean, number, undefined, null have Constant space complexity: O(1)
+- Array. String & Object have dynamic space complexity: O(n)
+- Arrays inside array logic have O(n2) space complexity.
+- Objects: Insertion, Removal, Access, hasOwnProperty have O(1)
+    Searching, Object.keys, Object.values, Object.entries have O(n).
+- Array: Search, Shift, Unshift, Concat, Slice, Splice, forEach, map, filter, reduce, reverse, split, join, new Set, flat : O(n)
+    Access, Push, Pop have O(1)
+    Insertion & removal: depends!; Push, pop are faster than shift & unshift because the whole array places change in shift & unshift
+    Sort has O(nlogn)
+
+--------------------------------------------------------------------------------------
+
 1. Palindrome Number
 const palindromeNumber = (num) => {
   return num < 0 ? false : num === +num.toString().split("").reverse().join("");
@@ -51,5 +65,35 @@ const anagram = (str1, str2) => {
   return true;
 };
 console.log(anagram("temst", "eestt"));
+
+--------------------------------------------------------------------------------------
+6. Array of numbers with a specific target
+const targetTwoSum = (arr, target) => {
+  let obj = {};
+  for (let i = 0; i < arr.length; i++) {
+    if (obj[target - arr[i]]) {
+    return [obj[target - arr[i]], i];
+    } else {
+      obj[arr[i]] = i;
+    }
+  }
+  return "No result";
+};
+console.log(targetTwoSum([4, 3, 5, 7, 10], 14));
+
+--------------------------------------------------------------------------------------
+7. Maximum profit on days: Best time to buy and sell stocks.
+// using greedy algo(We will calculate solution with whatever we have right now)
+const maxProfitToBuySellStocks = (prices) => {
+  let minStockPrice = prices[0],
+    profit = 0;
+  for (let i = 1; i < prices.length; i++) {
+    if (prices[i] < minStockPrice) minStockPrice = prices[i];
+    profit = Math.max(profit, prices[i] - minStockPrice);
+  }
+  return profit;
+};
+
+console.log(maxProfitToBuySellStocks([7, 5, 2, 6, 9])); 
 
 --------------------------------------------------------------------------------------
