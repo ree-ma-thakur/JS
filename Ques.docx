@@ -171,3 +171,28 @@ let lengthWithoutDuplicates = removeDuplicatesFromSorted(nums);
 console.log(nums.slice(0, removeDuplicatesFromSorted(nums)));
 
 --------------------------------------------------------------------------------------
+12. Same pairs
+const validateString = (string) => {
+  const stack = [];
+  const pairs = {
+    "(": ")",
+    "{": "}",
+    "[": "]",
+  };
+  for (const char of string) {
+    if (char in pairs) stack.push(char);
+    else {
+      if (isEmpty(stack)) return false;
+      const top = stack.pop();
+      if (pairs[top] !== char) return false;
+    }
+  }
+  return isEmpty(stack);
+};
+
+const isEmpty = (arr) => {
+  return arr.length === 0;
+};
+console.log(validateString("(({})"));
+
+--------------------------------------------------------------------------------------
