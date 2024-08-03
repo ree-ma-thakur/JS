@@ -194,7 +194,7 @@ const isEmpty = (arr) => {
 console.log(validateString("(({})"));
 
 --------------------------------------------------------------------------------------
-13.  Given an integer array nums, find the subarray with the largest sum, and return its sum
+13. Given an integer array nums, find the subarray with the largest sum, and return its sum
 const largestSumSubArr = (arr) => {
   let maxSum = arr[0];
   let currentSum = 0;
@@ -216,5 +216,119 @@ const largestSumSubArr = (arr) => {
   return arr.slice(start, end + 1);
 };
 console.log(largestSumSubArr([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+
+--------------------------------------------------------------------------------------
+14. Find next palindrome Number
+const findNextPalNumber = (num) => {
+  num++;
+  while (!isPal(num)) {
+    num++;
+  }
+  console.log(num);
+};
+const isPal = (num) => {
+  return num.toString() === num.toString().split("").reverse().join("");
+};
+findNextPalNumber(100);
+
+--------------------------------------------------------------------------------------
+15. Find the largest & smallest number from an array
+const largestSmallest = (arr) => {
+  let largest = arr[0] || 0;
+  let smallest = arr[0] || 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] > largest) {
+      largest = arr[i];
+    }
+    if (arr[i] < smallest) {
+      smallest = arr[i];
+    }
+  }
+  console.log(largest, smallest);
+};
+largestSmallest([100, 1234, 10, 4, 1212]);
+
+--------------------------------------------------------------------------------------
+16. Find duplicates from array
+const findDuplicate = (arr) => {
+  const obj = {};
+  const dupArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (obj[arr[i]]) dupArr.push(arr[i]);
+    obj[arr[i]] = (obj[arr[i]] || 0) + 1;
+  }
+  console.log(dupArr);
+};
+findDuplicate([2, 3, 6, 2, 6, 8]);
+--------------------------------------------------------------------------------------
+17. Find missing numbers in array from 1 till n length
+const findMissingNos = (arr, length) => {
+  const missing = [];
+  for (let i = 1; i <= length; i++) {
+    if (!arr.includes(i)) missing.push(i);
+  }
+  console.log(missing);
+};
+findMissingNos([2, 3, 6], 10);
+
+--------------------------------------------------------------------------------------
+18. Find first n prime numbers
+const findPrimes = (len) => {
+  const primes = [];
+  let num = 2;
+  while (primes.length < len) {
+    if (isPrime(num)) {
+      primes.push(num);
+    }
+    num++;
+  }
+  console.log(primes);
+};
+const isPrime = (num) => {
+  if (num <= 1) return false;
+  for (let i = 2; i <= Math.sqrt(num); i++) {
+    if (num % i === 0) return false;
+  }
+  return true;
+};
+findPrimes(6);
+
+--------------------------------------------------------------------------------------
+19. Find fibonacci series till specific length
+const fibSeries = (len) => {
+  if (len === 0) {
+    console.log([]);
+    return;
+  }
+  if (len === 1) {
+    console.log([1]);
+    return;
+  }
+  const series = [1, 1];
+  while (series.length < len) {
+    const nextFib = series[series.length - 1] + series[series.length - 2];
+    series.push(nextFib);
+  }
+  console.log(series);
+};
+fibSeries(6);
+
+20. Find whether a specific string is possibly palindrome or not.
+const possiblePallindrome = (str) => {
+  const charCount = {};
+  for (const char of str) {
+    charCount[char] = (charCount[char] || 0) + 1;
+  }
+  let oddCount = 0;
+  for (const count of Object.values(charCount)) {
+    if (count % 2 !== 0) oddCount += 1;
+  }
+  if (oddCount > 1) {
+    console.log(false);
+    return;
+  }
+  console.log(true);
+};
+possiblePallindrome("reerab");
 
 --------------------------------------------------------------------------------------
