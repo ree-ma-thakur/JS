@@ -100,3 +100,43 @@ const printPattern = (n) => {
     return str
 }
 console.log(printPattern(4))
+
+-------------------------------------------------------------------------
+7.    *  
+     *** 
+    *****
+const printPattern = (n) => {
+    let str = '';
+    for (let i = 0; i < 3; i++) {
+        for (let j = 1; j <= 3 * 2 - 1; j++) {
+            if (j < 3 - i || j > 3 + i) {
+                str += ' ';
+            } else {
+                str += '*';
+            }
+        }
+        str += '\n';
+    }
+    return(str);
+}
+console.log(printPattern(3))
+
+-------------------------------------------------------------------------
+7.  ***** 
+     *** 
+      *
+const printPattern = (n) => {
+    let str = '';
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n * 2 - 1; j++) {
+            if (j < i || j >= n * 2 - 1 - i) {
+                str += ' ';
+            } else {
+                str += '*';
+            }
+        }
+        str += '\n';
+    }
+    return(str);
+}
+console.log(printPattern(3))
