@@ -122,7 +122,7 @@ const printPattern = (n) => {
 console.log(printPattern(3))
 
 -------------------------------------------------------------------------
-7.  ***** 
+8.  ***** 
      *** 
       *
 const printPattern = (n) => {
@@ -141,8 +141,10 @@ const printPattern = (n) => {
 }
 console.log(printPattern(3))
 
-// BASIC MATHS
-// Count the digits
+-------------------------------------------------------------------------
+BASIC MATHS
+
+9. Count the digits
 const countDigits = (num) => {
     let count = 0;
     while(num > 0){
@@ -157,7 +159,8 @@ const countDigitsLog = (num) => {
 }
 console.log(countDigitsLog(24234))
 
-// Pallindrome number
+-------------------------------------------------------------------------
+10. Pallindrome number
 var isPalindrome = function(x) {
     if(x<0) return false
     let num = x, reverseNum = 0
@@ -169,7 +172,8 @@ var isPalindrome = function(x) {
     return reverseNum === x
 };   
 
-// Armstrong number
+-------------------------------------------------------------------------
+11. Armstrong number
 const checkArmstrong = (num) => {
   let dup = num;
   let digits = Math.floor(Math.log10(num)) + 1;
@@ -182,7 +186,8 @@ const checkArmstrong = (num) => {
   return sum === num;
 };
 
-// Print Divisors
+-------------------------------------------------------------------------
+12. Print Divisors
 const printDivisors = (num) => {
     for(let i = 1; i <= num; i++){
         if(num % i === 0) console.log(i)
@@ -203,7 +208,8 @@ const printDivisorsSqrt = (num) => {
 }
 printDivisorsSqrt(36)
 
-// Prime number
+-------------------------------------------------------------------------
+13. Prime number
 const isPrime = (n) => {
   if (n <= 1) return false;
   for (let i = 2; i * i <= n; i++) {
@@ -212,7 +218,8 @@ const isPrime = (n) => {
   return true;
 };
 
-// GCD/HCF => using Euclidean Algorithm
+-------------------------------------------------------------------------
+14. GCD/HCF => using Euclidean Algorithm
 const hcf = (a, b) => {
     while(a>0&&b>0){
         if(a>b) a = a%b
@@ -234,8 +241,9 @@ const gcdBest = (a, b) => {
   return a;
 };
 
-// RECURSION
-// Print name 5 times
+-------------------------------------------------------------------------
+RECURSION
+15. Print name 5 times
 let count = 0;
 const printName = () => {
   if (count === 5) return;
@@ -245,7 +253,8 @@ const printName = () => {
 };
 printName();
 
-// Print from 1 to N by backtracking (calling fun first & then printing value later)
+-------------------------------------------------------------------------
+16. Print from 1 to N by backtracking (calling fun first & then printing value later)
 const printNumber = (i, n) => {
   if (i < 1) return;
   printNumber(i - 1, n);
@@ -253,7 +262,8 @@ const printNumber = (i, n) => {
 };
 printNumber(3, 3);
 
-// Print from N to 1
+-------------------------------------------------------------------------
+17. Print from N to 1
 const printNum = (i, n) => {
   if (n < 1) return;
   console.log(n);
@@ -261,21 +271,24 @@ const printNum = (i, n) => {
 };
 printNum(3, 3);
 
-// Sum of 1st n numbers
+-------------------------------------------------------------------------
+18. Sum of 1st n numbers
 const sumOf = (n) => {
   if (n === 0) return 0;
   return n + sumOf(n - 1);
 };
 console.log(sumOf(3));
 
-// Factorial of N
+-------------------------------------------------------------------------
+19. Factorial of N
 const factOf = (n) => {
   if (n === 0) return 1;
   return n * factOf(n - 1);
 };
 console.log(factOf(3));
 
-// Reverse an array
+-------------------------------------------------------------------------
+20. Reverse an array
 const reverseArray = (arr, left = 0, right = arr.length - 1) => {
   if (left >= right) return;
   [arr[left], arr[right]] = [arr[right], arr[left]];
@@ -285,7 +298,8 @@ let arr = [1, 2, 3, 4, 5];
 reverseArray(arr);
 console.log(arr);
 
-// A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
+-------------------------------------------------------------------------
+21. A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
 var isPalindrome = function (s) {
   let left = 0,
     right = s.length - 1;
@@ -312,7 +326,8 @@ const isAlphanumeric = (char) => {
   );
 };
 
-// Fibonacci number
+-------------------------------------------------------------------------
+22. Fibonacci number
 const fib = (n, memo = {}) => {
   if (n <= 1) return n;
   if (memo[n]) return memo[n];
@@ -320,3 +335,5 @@ const fib = (n, memo = {}) => {
   return memo[n];
 };
 console.log(fib(4));
+
+-------------------------------------------------------------------------
