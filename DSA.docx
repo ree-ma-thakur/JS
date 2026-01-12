@@ -243,6 +243,7 @@ const gcdBest = (a, b) => {
 
 -------------------------------------------------------------------------
 RECURSION
+
 15. Print name 5 times
 let count = 0;
 const printName = () => {
@@ -335,5 +336,109 @@ const fib = (n, memo = {}) => {
   return memo[n];
 };
 console.log(fib(4));
+
+-------------------------------------------------------------------------
+ARRAY EASY
+
+23. Largest element in an array
+const findLargest = (arr) => {
+  if (arr.length === 0) return null;
+  let max = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i] > max) {
+      max = arr[i];
+    }
+  }
+  return max;
+};
+const arr = [3, 7, 2, 9, 4];
+console.log(findLargest(arr));
+
+-------------------------------------------------------------------------
+24. Find Second Smallest and Second Largest Element in an array
+const findSecondSmallestAndLargest = (arr) => {
+  if (arr.length < 2) {
+    return "Array must have at least two elements";
+  }
+  let smallest = Infinity,
+    secondSmallest = Infinity;
+  let largest = -Infinity,
+    secondLargest = -Infinity;
+  for (let num of arr) {
+    // For smallest
+    if (num < smallest) {
+      secondSmallest = smallest;
+      smallest = num;
+    } else if (num > smallest && num < secondSmallest) {
+      secondSmallest = num;
+    }
+    // For largest
+    if (num > largest) {
+      secondLargest = largest;
+      largest = num;
+    } else if (num < largest && num > secondLargest) {
+      secondLargest = num;
+    }
+  }
+  return {
+    secondSmallest,
+    secondLargest,
+  };
+};
+// Example
+const arr = [4, 2, 7, 1, 9, 5];
+console.log(findSecondSmallestAndLargest(arr));
+
+-------------------------------------------------------------------------
+25. Check if Array Is Sorted and Rotated
+const check = (nums) => {
+    let drops = 0;
+    const n = nums.length;
+    for (let i = 0; i < n; i++) {
+        if (nums[i] > nums[(i + 1) % n]) {
+            drops++;
+            if (drops > 1) return false;
+        }
+    }
+    return true;
+};
+console.log(check([3, 4, 5, 1, 2]))
+
+-------------------------------------------------------------------------
+26. Remove Duplicates from Sorted array
+const removeDuplicates = (nums) => {
+    let i = 0;
+    for(let j = 1; j < nums.length; j++){
+        if(nums[i] !== nums[j]){
+            i++
+            nums[i] = nums[j]
+        }
+    }
+    return i+1
+};
+console.log(removeDuplicates([0,0,1,1,1,2,2,3,3,4]))
+
+-------------------------------------------------------------------------
+27. Rotate Array to right by k steps
+const rotate = (nums, k) => {
+  const n = nums.length;
+  k = k % n;
+  reverse(nums, 0, n - 1);
+  reverse(nums, 0, k - 1);
+  reverse(nums, k, n - 1);
+  // If i want to rotate to left
+  // reverse(nums, 0, k - 1);
+  // reverse(nums, k, n - 1);
+  // reverse(nums, 0, n - 1);
+  return nums;
+};
+const reverse = (arr, left, right) => {
+  while (left < right) {
+    [arr[left], arr[right]] = [arr[right], arr[left]];
+    left++;
+    right--;
+  }
+};
+console.log(rotate([1, 2, 3, 4, 5, 6, 7], 3));
 
 -------------------------------------------------------------------------
