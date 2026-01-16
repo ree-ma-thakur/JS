@@ -722,3 +722,99 @@ const maxProfit = function (prices) {
   return profit;
 };
 console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+
+-------------------------------------------------------------------------
+40. You are given a 0-indexed integer array nums of even length consisting of an equal number of positive and negative integers. You should return the array of nums such that the array follows the given conditions: Every consecutive pair of integers have opposite signs; For all integers with the same sign, the order in which they were present in nums is preserved; The rearranged array begins with a positive integer; Return the modified array after rearranging the elements to satisfy the aforementioned conditions;
+const rearrangeArray = (nums) => {
+  let newArray = new Array(nums.length).fill(0);
+  let oddIdx = 1,
+    evenIdx = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] < 0) {
+      newArray[oddIdx] = nums[i];
+      oddIdx += 2;
+    } else {
+      newArray[evenIdx] = nums[i];
+      evenIdx += 2;
+    }
+  }
+  return newArray;
+};
+console.log(rearrangeArray([3, 1, -2, -5, 2, -4]));
+
+-------------------------------------------------------------------------
+41. A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
+const nextPermutation = (nums) => {
+  let breakIdx = -1;
+  const reverseArr = (arr, start, end) => {
+    while (start < end) {
+      [arr[start], arr[end]] = [arr[end], arr[start]];
+      start++;
+      end--;
+    }
+  };
+  for (let i = nums.length - 2; i >= 0; i--) {
+    if (nums[i] < nums[i + 1]) {
+      breakIdx = i;
+      break;
+    }
+  }
+  if (breakIdx === -1) {
+    reverseArr(nums, 0, nums.length - 1);
+    return nums;
+  }
+  for (let i = nums.length - 1; i >= breakIdx; i--) {
+    if (nums[i] > nums[breakIdx]) {
+      [nums[i], nums[breakIdx]] = [nums[breakIdx], nums[i]];
+      break;
+    }
+  }
+  reverseArr(nums, breakIdx + 1, nums.length - 1);
+  return nums;
+};
+console.log(nextPermutation([3, 2, 1]));
+const nextPermutationOp = (nums) => {
+  let i = nums.length - 2;
+  const reverseArr = (arr, start, end) => {
+    while (start < end) {
+      [arr[start], arr[end]] = [arr[end], arr[start]];
+      start++;
+      end--;
+    }
+  };
+  // Step 1: Find the first decreasing element from the right
+  while (i >= 0 && nums[i] >= nums[i + 1]) {
+    i--;
+  }
+  // Step 2: If pivot is found, find the element to swap with
+  if (i >= 0) {
+    let j = nums.length - 1;
+    while (nums[j] <= nums[i]) {
+      j--;
+    }
+    swap(nums, i, j);
+  }
+  // Step 3: Reverse the suffix to get the next lexicographical smallest
+  reverse(nums, i + 1, nums.length - 1);
+  return nums;
+};
+
+-------------------------------------------------------------------------
+42. Leaders in an Array
+const leaders = (nums) => {
+  let n = nums.length;
+  if (n === 0) return [];
+  let leadersArr = [nums[n - 1]],
+    idx = n - 1;
+  for (let i = nums.length - 2; i >= 0; i--) {
+    if (nums[i] > nums[idx]) {
+      leadersArr.push(nums[i]);
+      idx = i;
+    }
+  }
+  // If order need to be maintained then reverse the array if needed
+  return leadersArr;
+};
+console.log(leaders([13, 7, 5, 12, 1]));
+
+-------------------------------------------------------------------------
