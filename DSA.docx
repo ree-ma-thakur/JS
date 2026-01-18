@@ -338,6 +338,54 @@ const fib = (n, memo = {}) => {
 console.log(fib(4));
 
 -------------------------------------------------------------------------
+SORTING
+
+1. Selection sort
+const selectionSort = (arr) => {
+  let n = arr.length;
+  for (let i = 0; i < n - 1; i++) {
+    // Assume the first unsorted element is the minimum
+    let minIndex = i;
+    for (let j = i + 1; j < n; j++) {
+      if (arr[j] < arr[minIndex]) {
+        minIndex = j; // Update index if a smaller element is found
+      }
+    }
+    // Swap the found minimum element with the first unsorted element
+    if (minIndex !== i) {
+      [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+    }
+  }
+  return arr;
+};
+const data2 = [29, 10, 14, 37, 13];
+console.log("Selection Sort:", selectionSort(data2));
+TC: O(n2) (Avg, Best & Worst case); SC: O(1)
+
+-------------------------------------------------------------------------
+2. Bubble Sort
+const bubbleSort = (arr) => {
+  let n = arr.length;
+  let swapped;
+  for (let i = 0; i < n - 1; i++) {
+    swapped = false;
+    // Inner loop: elements at the end are already sorted
+    for (let j = 0; j < n - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        // Swap elements
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+        swapped = true;
+      }
+    }
+    // If no two elements were swapped by inner loop, then break
+    if (!swapped) break;
+  }
+  return arr;
+};
+const data = [64, 34, 25, 12, 22, 11, 90];
+console.log("Bubble Sort:", bubbleSort(data));
+
+-------------------------------------------------------------------------
 ARRAY EASY
 
 23. Largest element in an array
