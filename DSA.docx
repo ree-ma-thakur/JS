@@ -668,6 +668,45 @@ const singleNumber = (nums) => {
 console.log(singleNumber([4, 1, 2, 1, 2]));
 
 -------------------------------------------------------------------------
+34. Given an array nums of size n and an integer k, find the length of the longest sub-array that sums to k. If no such sub-array exists, return 0.
+const longestSubArrPositiveNumbersOnly = (arr, k) => {
+  let left = 0;
+  let sum = 0;
+  let maxLen = 0;
+  for (let right = 0; right < arr.length; right++) {
+    sum += arr[right];
+    while (sum > k) {
+      sum -= arr[left];
+      left++;
+    }
+    if (sum === k) {
+      maxLen = Math.max(maxLen, right - left + 1);
+    }
+  }
+  return maxLen;
+};
+console.log(longestSubArrPositiveNumbersOnly([10, 5, 2, 7, 1, 9], 15));
+const longestSubArrPosNegNumbers = (arr, k) => {
+  let map = new Map();
+  let sum = 0;
+  let maxLen = 0;
+  for (let i = 0; i < arr.length; i++) {
+    sum += arr[i];
+    if (sum === k) {
+      maxLen = i + 1;
+    }
+    if (map.has(sum - k)) {
+      maxLen = Math.max(maxLen, i - map.get(sum - k));
+    }
+    if (!map.has(sum)) {
+      map.set(sum, i);
+    }
+  }
+  return maxLen;
+};
+console.log(longestSubArrPosNegNumbers([-1, 1, 1], 1));
+
+-------------------------------------------------------------------------
 ARRAY MEDIUM
 
 35. Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
@@ -943,7 +982,6 @@ console.log(
   ]),
 );
 
-
 -------------------------------------------------------------------------
 45. You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise). You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.
 const rotate = (arr) => {
@@ -964,3 +1002,45 @@ console.log(
     [7, 8, 9],
   ]),
 );
+
+-------------------------------------------------------------------------
+46. Given a Matrix, print the given matrix in spiral order.
+const spiralOrder = (matrix) => {
+  let top = 0,
+    left = 0,
+    right = matrix[0].length - 1,
+    bottom = matrix.length - 1,
+    arr = [];
+  while (top <= bottom && left <= right) {
+    for (let i = left; i <= right; i++) {
+      arr.push(matrix[top][i]);
+    }
+    top++;
+    for (let i = top; i <= bottom; i++) {
+      arr.push(matrix[i][right]);
+    }
+    right--;
+    if (top <= bottom) {
+      for (let i = right; i >= left; i--) {
+        arr.push(matrix[bottom][i]);
+      }
+      bottom--;
+    }
+    if (left <= right) {
+      for (let i = bottom; i >= top; i--) {
+        arr.push(matrix[i][left]);
+      }
+      left++;
+    }
+  }
+  return arr;
+};
+console.log(
+  spiralOrder([
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12],
+  ]),
+);
+
+-------------------------------------------------------------------------
