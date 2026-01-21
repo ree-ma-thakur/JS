@@ -404,6 +404,45 @@ const data = [64, 34, 25, 12, 22, 11, 90];
 console.log("Insertion Sort:", insertionSort(data));
 
 -------------------------------------------------------------------------
+4. Merge Sort
+const merge = (arr, low, mid, high) => {
+  let temp = [], left = low, right = mid+1
+  while(left<=mid&& right<=high){
+    if(arr[left]<=arr[right]){
+      temp.push(arr[left])
+      left++
+    }else{
+      temp.push(arr[right])
+      right++
+    }
+  }
+  while(left<=mid){
+    temp.push(arr[left])
+    left++
+  }
+  while(right<=high){
+    temp.push(arr[right])
+    right++
+  }
+  for(let i =low; i<high;i++){
+    arr[i] = temp[i - low]
+  }
+}
+const mergeSort = (arr, low = 0, high = arr.length-1) => {
+  if(low>=high) return
+  let mid = Math.floor((low+high)/2)
+  mergeSort(arr, low, mid)
+  mergeSort(arr, mid+1, high)
+  merge(arr, low, mid, high)
+}
+let arr = [3,2,8,5,1,4,23]
+mergeSort(arr)
+console.log(arr)
+
+-------------------------------------------------------------------------
+5. Quick Sort
+
+-------------------------------------------------------------------------
 ARRAY EASY
 
 23. Largest element in an array
@@ -1044,3 +1083,64 @@ console.log(
 );
 
 -------------------------------------------------------------------------
+47. Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k. A subarray is a contiguous non-empty sequence of elements(positive & negative) within an array.
+const subarraySum = (nums, k) => {
+  let sum = 0,
+    count = 0,
+    hashMap = new Map();
+  hashMap.set(0, 1);
+  for (let i = 0; i < nums.length; i++) {
+    sum += nums[i];
+    if (hashMap.has(sum - k)) {
+      count += hashMap.get(sum - k);
+    }
+    hashMap.set(sum, (hashMap.get(sum) || 0) + 1);
+  }
+  return count;
+};
+console.log([1, 1, 1], 2);
+
+-------------------------------------------------------------------------
+ARRAY HARD
+
+48. Pascal’s Triangle
+a. Find value at row = r, column = c (1-indexed)
+const pascalValue = (r, c) => {
+  if (c < 1 || c > r) return 0;
+  let val = 1;
+  (r--, c--);
+  for (i = 0; i < c; i++) {
+    val = (val * (r - i)) / (i + 1);
+  }
+  return val;
+};
+console.log(pascalValue(5, 3));
+b. Find nth row of Pascal’s Triangle
+const getNthRow = (N) => {
+  let row = [];
+  let val = 1;
+  row.push(val);
+  for (let i = 1; i < N; i++) {
+    val = (val * (N - i)) / i;
+    row.push(val);
+  }
+  return row;
+};
+console.log(getNthRow(5));
+c. Generate Pascal’s Triangle up to N rows
+const pascalTriangle = (k) => {
+  let triangle = [];
+  for (let i = 0; i < k; i++) {
+    let subArr = [];
+    for (let j = 0; j <= i; j++) {
+      if (j === 0 || j === i) {
+        subArr.push(1);
+      } else {
+        subArr.push(triangle[i - 1][j - 1] + triangle[i - 1][j]);
+      }
+    }
+    triangle.push(subArr);
+  }
+  return triangle;
+};
+console.log(pascalTriangle(5));
