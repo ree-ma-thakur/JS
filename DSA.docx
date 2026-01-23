@@ -154,13 +154,31 @@ const countDigits = (num) => {
     return count
 }
 console.log(countDigits(24234))
+TC: O(logn); SC: O(1)
 const countDigitsLog = (num) => {
     return Math.floor(Math.log10(num))+1
 }
 console.log(countDigitsLog(24234))
+TC: O(1); SC: O(1)
 
 -------------------------------------------------------------------------
-10. Pallindrome number
+10.0 Reverse number
+var reverse = function (x) {
+  let num = 0,
+    sign = x > 0 ? 1 : -1;
+  x = Math.abs(x);
+  while (x > 0) {
+    let lastDigit = x % 10;
+    x = Math.floor(x / 10);
+    num = num * 10 + lastDigit;
+  }
+  if (num > Math.pow(2, 31) - 1) {
+    return 0;
+  }
+  return num * sign;
+};
+TC: O(logn); SC: O(1)
+10.1 Pallindrome number
 var isPalindrome = function(x) {
     if(x<0) return false
     let num = x, reverseNum = 0
@@ -170,7 +188,8 @@ var isPalindrome = function(x) {
         reverseNum = (reverseNum*10) + lastDigit
     }
     return reverseNum === x
-};   
+};
+TC: O(logn); SC: O(1)
 
 -------------------------------------------------------------------------
 11. Armstrong number
@@ -185,6 +204,7 @@ const checkArmstrong = (num) => {
   }
   return sum === num;
 };
+TC: O(logn); SC: O(1)
 
 -------------------------------------------------------------------------
 12. Print Divisors
@@ -193,20 +213,24 @@ const printDivisors = (num) => {
         if(num % i === 0) console.log(i)
     }
 }
+TC: O(n); SC: O(1)
 printDivisors(36)
 const printDivisorsSqrt = (num) => {
-    let small = [], large = []
-    // for(let i = 1; i <= Math.sqrt(num); i++){
-    for(let i = 1; i*i <= num; i++){
-        if(num % i === 0) {
-            small.push(i)
-            if(num/i !== i) large.push(num/i)
-        }
+  // if sorted ans is not required we can skip array & can directly use console.log
+  let small = [],
+    large = [];
+  // for(let i = 1; i <= Math.sqrt(num); i++){
+  for (let i = 1; i * i <= num; i++) {
+    if (num % i === 0) {
+      small.push(i);
+      if (num / i !== i) large.push(num / i);
     }
-    for(a of small) console.log(a)
-    for(let b = large.length-1; b>0; b--) console.log(large[b])
-}
-printDivisorsSqrt(36)
+  }
+  for (a of small) console.log(a);
+  for (let b = large.length - 1; b > 0; b--) console.log(large[b]);
+};
+printDivisorsSqrt(36);
+TC: O(√n); SC: O(√n)
 
 -------------------------------------------------------------------------
 13. Prime number
@@ -217,19 +241,22 @@ const isPrime = (n) => {
   }
   return true;
 };
+TC: O(√n); SC: O(1)
 
 -------------------------------------------------------------------------
 14. GCD/HCF => using Euclidean Algorithm
 const hcf = (a, b) => {
-    while(a>0&&b>0){
-        if(a>b) a = a%b
-        if(b>a) b = b%a
-    }
-    if(a===0) return b
-    return a
-}
-console.log(hcf(20, 40))
-const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+  while (a > 0 && b > 0) {
+    if (a > b) a = a % b;
+    if (b > a) b = b % a;
+  }
+  if (a === 0) return b;
+  return a;
+};
+console.log(hcf(20, 40));
+TC: O(log min(a, b)); SC: O(1)
+const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
+TC: O(log min(a, b)); SC: O(log min(a, b))
 const gcdBest = (a, b) => {
   a = Math.abs(a);
   b = Math.abs(b);
@@ -240,6 +267,7 @@ const gcdBest = (a, b) => {
   }
   return a;
 };
+TC: O(log min(a, b)); SC: O(1)
 
 -------------------------------------------------------------------------
 RECURSION
@@ -1255,3 +1283,39 @@ const fourSum = (nums, target) => {
 console.log(fourSum([1, 0, -1, 0, -2, 2], 0));
 
 -------------------------------------------------------------------------
+52. Count the number of subarrays with given xor K
+const subarrayXor = (nums, target) => {
+  let prefixXor = 0;
+  let count = 0;
+  let map = new Map();
+  map.set(0, 1);
+  for (let i = 0; i < nums.length; i++) {
+    prefixXor ^= nums[i];
+    if (map.has(prefixXor ^ target)) {
+      count += map.get(prefixXor ^ target);
+    }
+    map.set(prefixXor, (map.get(prefixXor) || 0) + 1);
+  }
+  return count;
+};
+console.log([4, 2, 2, 6, 4], 6);
+
+-------------------------------------------------------------------------
+53. Merge Intervals: Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+const merge = (arr) => {
+  if (!arr.length) return [];
+  arr = arr.sort((a, b) => a[0] - b[0]);
+  let intervals = [arr[0]];
+  for (let i = 1; i < arr.length; i++) {
+    let elt = intervals[intervals.length - 1];
+    if (arr[i][0] <= elt[1]) elt[1] = Math.max(arr[i][1], elt[1]);
+    else intervals.push(arr[i]);
+  }
+  return intervals;
+};
+console.log([
+  [1, 3],
+  [2, 6],
+  [8, 10],
+  [15, 18],
+]);
