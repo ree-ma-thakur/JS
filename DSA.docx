@@ -790,6 +790,7 @@ const longestSubArrPosNegNumbers = (arr, k) => {
   return maxLen;
 };
 console.log(longestSubArrPosNegNumbers([-1, 1, 1], 1));
+TC: O(n); SC: O(n)
 
 -------------------------------------------------------------------------
 ARRAY MEDIUM
@@ -1413,6 +1414,44 @@ const maxProduct = (nums) => {
 console.log(maxProduct([2, 3, -2, 4]));
 
 -------------------------------------------------------------------------
-BINARY SEARCH
+BINARY SEARCH (applies only to sorted array(or rotated or sorted in any range))
 
 59. Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.
+const search = (nums, target) => {
+  let low = 0,
+    high = nums.length - 1;
+  while (low <= high) {
+    let mid = Math.floor((low + high) / 2);
+    if (nums[mid] === target) return mid;
+    else if (nums[mid] < target) low = mid + 1;
+    else high = mid - 1;
+  }
+  return -1;
+};
+console.log(search([-1, 0, 3, 5, 9, 12]));
+
+-------------------------------------------------------------------------
+60. Single Element in Sorted Array: You are given a sorted array consisting of only integers where every element appears exactly twice, except for one element which appears exactly once.
+const singleNonDuplicate = (nums) => {
+  let n = nums.length;
+  if (n === 1 || nums[0] !== nums[1]) return nums[0];
+  if (nums[n - 1] !== nums[n - 2]) return nums[n - 1];
+  let low = 1,
+    high = n - 2;
+  while (low <= high) {
+    let mid = Math.floor((high + low) / 2);
+    if (nums[mid - 1] !== nums[mid] && nums[mid] !== nums[mid + 1])
+      return nums[mid];
+    if (
+      (mid % 2 === 1 && nums[mid] === nums[mid - 1]) ||
+      (mid % 2 === 0 && nums[mid] === nums[mid + 1])
+    ) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  return -1;
+};
+console.log(singleNonDuplicate([1, 1, 2, 3, 3, 4, 4, 8, 8]));
+
