@@ -873,33 +873,32 @@ TC: O(n); SC: O(1)
 38. Given an integer array nums, find the subarray with the largest sum, and return its sum.
 // Kadane’s Algo
 const maxSubArray = (nums) => {
-  let maxSum = nums[0],
-    currSum = 0,
+  let sum = 0,
+    max = nums[0],
     start = 0,
     startIdx = 0,
     endIdx = 0;
-  for (let i = 0; i < nums.length; i++) {=
-    currSum += nums[i];
-    if (currSum > maxSum) {
-      maxSum = currSum;
+  for (let i = 0; i < nums.length; i++) {
+    sum += nums[i];
+    if (sum > max) {
+      max = sum;
       startIdx = start;
       endIdx = i;
     }
-    if (currSum < 0) {
-      currSum = 0;
+    if (sum < 0) {
+      sum = 0;
       start = i + 1;
     }
   }
-  for (let i = startIdx; i <= endIdx; i++) {
-    console.log(nums[i]);
-  }
-  return maxSum;
+  return { max, startIdx, endIdx };
 };
-console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+console.log(maxSubArray([-2, -3, -5, -1]));
+TC: O(n); SC: O(1)
 
 -------------------------------------------------------------------------
 39. You are given an array prices where prices[i] is the price of a given stock on the ith day. You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0
 const maxProfit = function (prices) {
+  if (prices.length < 2) return 0;
   let profit = 0,
     mini = prices[0];
   for (let i = 1; i < prices.length; i++) {
@@ -910,6 +909,7 @@ const maxProfit = function (prices) {
   return profit;
 };
 console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+TC: O(n); SC: O(1)
 
 -------------------------------------------------------------------------
 40. You are given a 0-indexed integer array nums of even length consisting of an equal number of positive and negative integers. You should return the array of nums such that the array follows the given conditions: Every consecutive pair of integers have opposite signs; For all integers with the same sign, the order in which they were present in nums is preserved; The rearranged array begins with a positive integer; Return the modified array after rearranging the elements to satisfy the aforementioned conditions;
@@ -929,6 +929,22 @@ const rearrangeArray = (nums) => {
   return newArray;
 };
 console.log(rearrangeArray([3, 1, -2, -5, 2, -4]));
+TC: O(n); SC: O(n)
+const rearrangeArrayInPlace = (nums) => {
+  let pos = 0, neg = 1
+  while (pos < nums.length && neg < nums.length) {
+    if (nums[pos] > 0) pos += 2
+    else if (nums[neg] < 0) neg += 2
+    else {
+      [nums[pos], nums[neg]] = [nums[neg], nums[pos]]
+      pos += 2
+      neg += 2
+    }
+  }
+  return nums
+}
+console.log(rearrangeArrayInPlace([3,1,-2,-5,2,-4]))
+TC: O(n); SC: O(1)
 
 -------------------------------------------------------------------------
 41. A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
@@ -990,20 +1006,21 @@ const nextPermutationOp = (nums) => {
 -------------------------------------------------------------------------
 42. Leaders in an Array
 const leaders = (nums) => {
-  let n = nums.length;
-  if (n === 0) return [];
-  let leadersArr = [nums[n - 1]],
-    idx = n - 1;
+  if (nums.length === 0) return [];
+  let leaders = [];
+  let maxFromRight = nums[nums.length - 1];
+  leaders.push(maxFromRight);
   for (let i = nums.length - 2; i >= 0; i--) {
-    if (nums[i] > nums[idx]) {
-      leadersArr.push(nums[i]);
-      idx = i;
+    if (nums[i] > maxFromRight) {
+      maxFromRight = nums[i];
+      leaders.push(nums[i]);
     }
   }
   // If order need to be maintained then reverse the array if needed
-  return leadersArr;
+  return leaders.reverse();
 };
 console.log(leaders([13, 7, 5, 12, 1]));
+TC: O(n); SC: O(n)
 
 -------------------------------------------------------------------------
 43. Given an array nums of n integers. Return the length of the longest sequence of consecutive integers. The integers in this sequence can appear in any order.
@@ -1513,3 +1530,88 @@ const findNthRoot = (root, n) => {
   return -1;
 };
 console.log(findNthRoot(3, 27));
+
+-------------------------------------------------------------------------
+74. Koko eating Bananas: Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours. Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour. Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return. Return the minimum integer k such that she can eat all the bananas within h hours.
+const minEatingSpeed = (piles, h) => {
+  const totalHours = (minBanana) => {
+    let hours = 0;
+    for (let pile of piles) {
+      hours += Math.ceil(pile / minBanana);
+    }
+    return hours;
+  };
+  let max = Math.max(...piles);
+  let low = 1,
+    high = max;
+  while (low < high) {
+    let mid = Math.floor((low + high) / 2);
+    let hours = totalHours(mid);
+    if (hours <= h) high = mid;
+    else low = mid + 1;
+  }
+  return low;
+};
+console.log(minEatingSpeed([30, 11, 23, 4, 20]));
+
+-------------------------------------------------------------------------
+75. Minimum number of days to make m bouquets: You are given an integer array bloomDay, an integer m and an integer k. You want to make m bouquets. To make a bouquet, you need to use k adjacent flowers from the garden. The garden consists of n flowers, the ith flower will bloom in the bloomDay[i] and then can be used in exactly one bouquet. Return the minimum number of days you need to wait to be able to make m bouquets from the garden. If it is impossible to make m bouquets return -1.
+const minDays = (bloomDay, m, k) => {
+  if (bloomDay.length < m * k) return -1;
+  const isPossible = (day) => {
+    let count = 0,
+      bouquet = 0;
+    for (let bloom of bloomDay) {
+      if (bloom <= day) {
+        count++;
+        if (count === k) {
+          bouquet++;
+          count = 0;
+          if (bouquet === m) return true;
+        }
+      } else {
+        count = 0;
+      }
+    }
+    return false;
+  };
+  let low = Math.min(...bloomDay),
+    high = Math.max(...bloomDay);
+  while (low <= high) {
+    let mid = Math.floor((low + high) / 2);
+    if (isPossible(mid)) {
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+  return low;
+};
+console.log(minDays([1, 10, 3, 10, 2], 3, 1));
+
+-------------------------------------------------------------------------
+76. Find the smallest divisor given a threshold: Given an array of integers nums and an integer threshold, we will choose a positive integer divisor, divide all the array by it, and sum the division's result. Find the smallest divisor such that the result mentioned above is less than or equal to threshold. Each result of the division is rounded to the nearest integer greater than or equal to that element. (For example: 7/3 = 3 and 10/2 = 5).
+const smallestDivisor = (nums, threshold) => {
+  let high = Math.max(...nums),
+    low = 1;
+  const countSum = (divisor) => {
+    let sum = 0;
+    for (let num of nums) {
+      sum += Math.ceil(num / divisor);
+      if (sum > threshold) return sum;
+    }
+    return sum;
+  };
+  while (low <= high) {
+    let mid = Math.floor((low + high) / 2);
+    if (countSum(mid) > threshold) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  return low;
+};
+console.log(smallestDivisor([1, 2, 5, 9], 6));
+
+-------------------------------------------------------------------------
