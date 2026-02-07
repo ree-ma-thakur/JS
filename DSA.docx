@@ -1042,10 +1042,12 @@ const longestSequence = (arr) => {
   return longest;
 };
 console.log(longestSequence([100, 4, 200, 1, 3, 2]));
+TC: O(n); SC: O(n)
 
 -------------------------------------------------------------------------
 44. Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's. You must do it in place.
 const setZeroes = (arr) => {
+  if (!arr.length || !arr[0].length) return arr;
   let m = arr.length;
   let n = arr[0].length;
   let firstColZero = 1;
@@ -1059,7 +1061,7 @@ const setZeroes = (arr) => {
     }
   }
   for (let i = 1; i < m; i++) {
-    for (let j = 0; j < n; j++) {
+    for (let j = 1; j < n; j++) {
       if (arr[i][0] === 0 || arr[0][j] === 0) {
         arr[i][j] = 0;
       }
@@ -1081,10 +1083,14 @@ console.log(
     [0, 1, 1, 1],
   ]),
 );
+TC: O(m*n); SC: O(1)
 
 -------------------------------------------------------------------------
 45. You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise). You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.
 const rotate = (arr) => {
+  if (!arr.length || arr.some((row) => row.length !== arr.length)) {
+    return arr;
+  }
   for (let i = 0; i < arr.length; i++) {
     for (j = i + 1; j < arr.length; j++) {
       [arr[i][j], arr[j][i]] = [arr[j][i], arr[i][j]];
@@ -1102,10 +1108,12 @@ console.log(
     [7, 8, 9],
   ]),
 );
+TC: O(n2); SC: O(1)
 
 -------------------------------------------------------------------------
 46. Given a Matrix, print the given matrix in spiral order.
 const spiralOrder = (matrix) => {
+  if (!matrix.length || !matrix[0].length) return [];
   let top = 0,
     left = 0,
     right = matrix[0].length - 1,
@@ -1146,9 +1154,10 @@ console.log(
 -------------------------------------------------------------------------
 47. Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k. A subarray is a contiguous non-empty sequence of elements(positive & negative) within an array.
 const subarraySum = (nums, k) => {
+  if (nums.length === 0) return 0;
+  const hashMap = new Map();
   let sum = 0,
-    count = 0,
-    hashMap = new Map();
+    count = 0;
   hashMap.set(0, 1);
   for (let i = 0; i < nums.length; i++) {
     sum += nums[i];
@@ -1160,6 +1169,7 @@ const subarraySum = (nums, k) => {
   return count;
 };
 console.log([1, 1, 1], 2);
+TC: O(n); SC: O(n)
 
 -------------------------------------------------------------------------
 ARRAY HARD
@@ -1615,3 +1625,80 @@ const smallestDivisor = (nums, threshold) => {
 console.log(smallestDivisor([1, 2, 5, 9], 6));
 
 -------------------------------------------------------------------------
+77. Capacity to ship packages within D days: A conveyor belt has packages that must be shipped from one port to another within days days. The ith package on the conveyor belt has a weight of weights[i]. Each day, we load the ship with packages on the conveyor belt (in the order given by weights). We may not load more weight than the maximum weight capacity of the ship. Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being shipped within days days.
+const shipWithinDays = (weights, days) => {
+  const countDays = (capacity) => {
+    let countDay = 1,
+      sum = 0;
+    for (let weight of weights) {
+      sum += weight;
+      if (sum > capacity) {
+        countDay++;
+        if (countDay > days) return countDay;
+        sum = weight;
+      }
+    }
+    return countDay;
+  };
+  let low = Math.max(...weights),
+    high = weights.reduce((a, b) => a + b, 0);
+  while (low <= high) {
+    let mid = Math.floor((low + high) / 2);
+    if (countDays(mid) > days) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  return low;
+};
+console.log([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5);
+
+-------------------------------------------------------------------------
+78. Kth missing Positive number: Given an array arr of positive integers sorted in a strictly increasing order, and an integer k. Return the kth positive integer that is missing from this array.
+const findKthPositive = (arr, k) => {
+  let low = 0,
+    high = arr.length - 1;
+  while (low <= high) {
+    let mid = Math.floor((low + high) / 2);
+    let missingNumbers = arr[mid] - (mid + 1);
+    if (missingNumbers < k) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  // or high+1+k
+  return low + k;
+};
+console.log(findKthPositive([2, 3, 4, 7, 11], 5));
+
+-------------------------------------------------------------------------
+79. Aggressive Cows: You are given an array 'arr' of size 'n' which denotes the position of stalls. You are also given an integer 'k' which denotes the number of aggressive cows. You are given the task of assigning stalls to 'k' cows such that the minimum distance between any two of them is the maximum possible. Find the maximum possible minimum distance.
+const aggressiveCows = (arr, k) => {
+  arr.sort((a, b) => a - b);
+  let low = 0;
+  let high = arr[arr.length - 1] - arr[0];
+  const canPlace = (distance) => {
+    let cows = 1;
+    let lastPos = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+      if (arr[i] - lastPos >= distance) {
+        cows++;
+        lastPos = arr[i];
+      }
+      if (cows >= k) return true;
+    }
+    return false;
+  };
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    if (canPlace(mid)) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  return high;
+};
+console.log(aggressiveCows([0, 3, 4, 7, 10, 9], 4));
