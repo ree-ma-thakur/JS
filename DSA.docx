@@ -1735,3 +1735,43 @@ const splitArray = (nums, k) => {
   return low;
 };
 console.log([7, 2, 5, 10, 8], 2);
+
+-------------------------------------------------------------------------
+STRINGS
+
+Remove outermost parantheses: A valid parentheses string is either empty "", "(" + A + ")", or A + B, where A and B are valid parentheses strings, and + represents string concatenation. For example, "", "()", "(())()", and "(()(()))" are all valid parentheses strings.
+const removeOuterParentheses = (s) => {
+  let count = 0,
+    str = "";
+  for (let char of s) {
+    if (char === "(") {
+      count += 1;
+      if (count > 1) {
+        str += char;
+      }
+    } else {
+      count -= 1;
+      if (count > 0) {
+        str += char;
+      }
+    }
+  }
+  return str;
+};
+console.log(removeOuterParentheses("(()())(())"));
+
+-------------------------------------------------------------------------
+Largest Odd Number in String: You are given a string num, representing a large integer. Return the largest-valued odd integer (as a string) that is a non-empty substring of num, or an empty string "" if no odd integer exists. A substring is a contiguous sequence of characters within a string.
+const largestOddNumber = (num) => {
+  let i = num.length - 1;
+  while (i >= 0) {
+    if ((num[i] - "0") % 2 === 1) {
+      return num.substring(0, i + 1);
+    }
+    i--;
+  }
+  return "";
+};
+console.log(largestOddNumber("35427"));
+
+-------------------------------------------------------------------------
