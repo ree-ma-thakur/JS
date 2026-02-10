@@ -1775,3 +1775,36 @@ const largestOddNumber = (num) => {
 console.log(largestOddNumber("35427"));
 
 -------------------------------------------------------------------------
+Longest Common Prefix: Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string "".
+const longestCommonPrefix = (strs) => {
+  if (strs.length === 0) return "";
+  strs.sort();
+  let start = strs[0],
+    last = strs[strs.length - 1],
+    commonPre = "";
+  for (let i = 0; i < Math.min(start.length, last.length); i++) {
+    if (start[i] === last[i]) commonPre += start[i];
+    else break;
+  }
+  return commonPre;
+};
+console.log(longestCommonPrefix(["dog", "racecar", "car"]));
+
+-------------------------------------------------------------------------
+Isomorphic Strings: Given two strings s and t, determine if they are isomorphic. Two strings s and t are isomorphic if the characters in s can be replaced to get t. All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character, but a character may map to itself.
+const isIsomorphic = (s, t) => {
+  if (s.length !== t.length) return false;
+  let sArr = new Array(250).fill(0);
+  let tArr = new Array(250).fill(0);
+  for (let i = 0; i < s.length; i++) {
+    let sAt = s.charCodeAt(i);
+    let tAt = t.charCodeAt(i);
+    if (sArr[sAt] !== tArr[tAt]) return false;
+    sArr[sAt] = i + 1;
+    tArr[tAt] = i + 1;
+  }
+  return true;
+};
+console.log(isIsomorphic("egg", "add"));
+
+-------------------------------------------------------------------------
