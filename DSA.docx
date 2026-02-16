@@ -1818,6 +1818,125 @@ const findMedianSortedArrays = (nums1, nums2, k) => {
 console.log(findMedianSortedArrays([2, 3, 6, 7, 9], [1, 4, 8, 10], 5));
 
 -------------------------------------------------------------------------
+84. Find the row with maximum number of 1's: You have been given a non-empty grid ‘mat’ with 'n' rows and 'm' columns consisting of only 0s and 1s. All the rows are sorted in ascending order. Your task is to find the index of the row with the maximum number of ones. Note: If two rows have the same number of ones, consider the one with a smaller index. If there's no row with at least 1 zero, return -1
+const rowWithMax1s = (matrix) => {
+  let row = -1;
+  let max = 0;
+  for (let i = 0; i < matrix.length; i++) {
+    let low = 0;
+    let high = matrix[i].length - 1;
+    while (low <= high) {
+      let mid = Math.floor((low + high) / 2);
+      if (matrix[i][mid] === 0) {
+        low = mid + 1;
+      } else {
+        high = mid - 1;
+      }
+    }
+    let onesCount = matrix[i].length - low;
+    if (onesCount > max) {
+      max = onesCount;
+      row = i;
+    }
+  }
+  return row;
+};
+console.log(
+  rowWithMax1s([
+    [0, 1, 1],
+    [0, 0, 1],
+    [1, 1, 1],
+  ]),
+);
+
+-------------------------------------------------------------------------
+85: Search a 2D Matrix: You are given an m x n integer matrix matrix with the following two properties: Each row is sorted in non-decreasing order. The first integer of each row is greater than the last integer of the previous row. Given an integer target, return true if target is in matrix or false otherwise. You must write a solution in O(log(m * n)) time complexity.
+const searchMatrix = (matrix, target) => {
+  let low = 0,
+    m = matrix.length,
+    n = matrix[0].length,
+    high = m * n - 1;
+  while (low <= high) {
+    let mid = Math.floor((low + high) / 2);
+    let i = Math.floor(mid / n),
+      j = mid % n;
+    if (matrix[i][j] === target) return true;
+    else if (matrix[i][j] < target) low = mid + 1;
+    else high = mid - 1;
+  }
+  return false;
+};
+console.log(
+  [
+    [1, 3, 5, 7],
+    [10, 11, 16, 20],
+    [23, 30, 34, 60],
+  ],
+  11,
+);
+
+-------------------------------------------------------------------------
+86. Search a 2D Matrix II: Write an efficient algorithm that searches for a value target in an m x n integer matrix matrix. This matrix has the following properties: Integers in each row are sorted in ascending from left to right. Integers in each column are sorted in ascending from top to bottom.
+const searchMatrix = (matrix, target) => {
+  let row = 0,
+    col = matrix[0].length - 1;
+  while (row < matrix.length && col >= 0) {
+    if (matrix[row][col] === target) return true;
+    else if (matrix[row][col] > target) col--;
+    else row++;
+  }
+  return false;
+};
+console.log(
+  [
+    [1, 4, 7, 11, 15],
+    [2, 5, 8, 12, 19],
+    [3, 6, 9, 16, 22],
+    [10, 13, 14, 17, 24],
+    [18, 21, 23, 26, 30],
+  ],
+  5,
+);
+
+-------------------------------------------------------------------------
+87. Find a Peak Element II: A peak element in a 2D grid is an element that is strictly greater than all of its adjacent neighbors to the left, right, top, and bottom. Given a 0-indexed m x n matrix mat where no two adjacent cells are equal, find any peak element mat[i][j] and return the length 2 array [i,j]. You may assume that the entire matrix is surrounded by an outer perimeter with the value -1 in each cell. You must write an algorithm that runs in O(m log(n)) or O(n log(m)) time.
+var findPeakGrid = function (mat) {
+  let rows = mat.length;
+  let cols = mat[0].length;
+  let low = 0,
+    high = cols - 1;
+  while (low <= high) {
+    let mid = Math.floor((low + high) / 2);
+    let maxIndex = 0;
+    for (let i = 0; i < rows; i++) {
+      if (mat[i][mid] > mat[maxIndex][mid]) {
+        maxIndex = i;
+      }
+    }
+    let left = mid === 0 ? -Infinity : mat[maxIndex][mid - 1];
+    let right = mid === cols - 1 ? -Infinity : mat[maxIndex][mid + 1];
+    if (mat[maxIndex][mid] > left && mat[maxIndex][mid] > right) {
+      return [maxIndex, mid];
+    } else if (left > mat[maxIndex][mid]) {
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+  return [-1, -1];
+};
+console.log(
+  findPeakGrid([
+    [10, 20, 15],
+    [21, 30, 14],
+    [7, 16, 32],
+  ]),
+);
+
+-------------------------------------------------------------------------
+88. 
+
+-------------------------------------------------------------------------
 STRINGS
 
 Remove outermost parantheses: A valid parentheses string is either empty "", "(" + A + ")", or A + B, where A and B are valid parentheses strings, and + represents string concatenation. For example, "", "()", "(())()", and "(()(()))" are all valid parentheses strings.
